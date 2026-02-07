@@ -3,6 +3,36 @@ const container = document.querySelector('.container');
 const sections = document.querySelectorAll('.section');
 const dots = document.querySelectorAll('.dot');
 
+// Create animated animal doodles
+function createDoodles() {
+    const doodlesContainer = document.querySelector('.bg-doodles');
+    const animals = ['🐡', '🐷', '🐾', '🐟', '🐠', '🦈', '🐋', '🐙', '🦀', '🐚', '🦑', '🐬', '🦐', '🐢'];
+    
+    // Create multiple floating animals
+    for (let i = 0; i < 20; i++) {
+        const doodle = document.createElement('div');
+        doodle.className = 'doodle';
+        doodle.textContent = animals[Math.floor(Math.random() * animals.length)];
+        
+        // Random position
+        doodle.style.left = Math.random() * 100 + '%';
+        doodle.style.top = Math.random() * 100 + '%';
+        
+        // Random animation duration and delay
+        doodle.style.animationDuration = (15 + Math.random() * 25) + 's';
+        doodle.style.animationDelay = Math.random() * 10 + 's';
+        
+        // Random size
+        const size = 30 + Math.random() * 40;
+        doodle.style.fontSize = size + 'px';
+        
+        doodlesContainer.appendChild(doodle);
+    }
+}
+
+// Initialize doodles
+createDoodles();
+
 // Update active dot on scroll
 container.addEventListener('scroll', () => {
     let current = '';
