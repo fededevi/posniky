@@ -113,3 +113,53 @@ document.getElementById('email-btn')?.addEventListener('click', function() {
     display.classList.add('email-shown');
     btn.style.display = 'none';
 });
+
+// Click explosion effect with gravity
+const animals = ['🐡', '🐷', '🐾', '🐟', '🐠', '🦈', '🐋', '🐙', '🦀', '🐚', '🦑', '🐬', '🦐', '🐢'];
+
+document.addEventListener('click', function(e) {
+    // Don't trigger on interactive elements
+    if (e.target.tagName === 'A' || e.target.tagName === 'BUTTON' || e.target.closest('.sidebar')) {
+        return;
+    }
+    
+    const numDoodles = 8 + Math.floor(Math.random() * 5);
+    
+    for (let i = 0; i < numDoodles; i++) {
+        createExplosionDoodle(e.clientX, e.clientY);
+    }
+});
+
+function createExplosionDoodle(x, y) {
+    const doodle = document.createElement('div');
+    doodle.className = 'explosion-doodle';
+    doodle.textContent = animals[Math.floor(Math.random() * animals.length)];
+    
+    // Random size
+    const size = 30 + Math.random() * 30;
+    doodle.style.fontSize = size + 'px';
+    
+    // Position at click point
+    doodle.style.left = x + 'px';
+    doodle.style.top = y + 'px';
+    
+    // Random explosion direction
+    const angle = Math.random() * Math.PI * 2;
+    const velocity = 100 + Math.random() * 150;
+    const vx = Math.cos(angle) * velocity;
+    const vy = Math.sin(angle) * velocity - (100 + Math.random() * 100); // Initial upward velocity
+    
+    doodle.style.setProperty('--vx', vx + 'px');
+    doodle.style.setProperty('--vy', vy + 'px');
+    
+    // Random rotation
+    const rotations = 1 + Math.floor(Math.random() * 3);
+    doodle.style.setProperty('--rotations', rotations);
+    
+    document.body.appendChild(doodle);
+    
+    // Remove after animation
+    setTimeout(() => {
+        doodle.remove();
+    }, 2000);
+}
