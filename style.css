@@ -442,6 +442,10 @@ p {
     animation-delay: 0.8s;
 }
 
+.passion-card:nth-child(6) .passion-icon {
+    animation-delay: 1s;
+}
+
 @keyframes bounce-subtle {
     0%, 100% {
         transform: translateY(0);
