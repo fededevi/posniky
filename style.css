@@ -545,23 +545,17 @@ p {
     position: fixed;
     pointer-events: none;
     z-index: 9999;
-    animation: explode-gravity 2.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+    animation: explode-radial 2s ease-out forwards;
     opacity: 1;
 }
 
-@keyframes explode-gravity {
+@keyframes explode-radial {
     0% {
-        transform: translate(0, 0) rotate(0deg);
-        opacity: 1;
-    }
-    20% {
-        /* Peak of trajectory - deceleration */
-        transform: translate(calc(var(--vx) * 0.6), calc(var(--vy) * 0.5)) rotate(calc(var(--rotations) * 72deg));
+        transform: translate(0, 0) rotate(0deg) scale(0.5);
         opacity: 1;
     }
     100% {
-        /* Falling down with acceleration */
-        transform: translate(var(--vx), calc(var(--vy) + 1200px)) rotate(calc(var(--rotations) * 360deg));
+        transform: translate(var(--vx), var(--vy)) rotate(calc(var(--rotations) * 360deg)) scale(1);
         opacity: 0;
     }
 }
