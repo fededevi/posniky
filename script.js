@@ -117,6 +117,54 @@ document.getElementById('email-btn')?.addEventListener('click', function() {
 // Click explosion effect with gravity
 const animals = ['🐡', '🐷', '🐾', '🐟', '🐠', '🦈', '🐋', '🐙', '🦀', '🐚', '🦑', '🐬', '🦐', '🐢'];
 
+// Easter Egg: Random ugly fish appears
+const uglyFish = ['🐡', '🐡', '🐡', '🐠', '🦈', '🐟'];
+let fishTimeout;
+
+function spawnUglyFish() {
+    // Random chance between 15-45 seconds
+    const delay = (15 + Math.random() * 30) * 1000;
+    
+    fishTimeout = setTimeout(() => {
+        const fish = document.createElement('div');
+        fish.className = 'easter-fish';
+        fish.textContent = uglyFish[Math.floor(Math.random() * uglyFish.length)];
+        
+        // Random vertical position
+        fish.style.top = (20 + Math.random() * 60) + '%';
+        
+        // Random size
+        const size = 60 + Math.random() * 80;
+        fish.style.fontSize = size + 'px';
+        
+        document.body.appendChild(fish);
+        
+        // Make it clickable
+        fish.addEventListener('click', function() {
+            this.style.animation = 'fish-explode 0.5s ease-out forwards';
+            setTimeout(() => this.remove(), 500);
+            
+            // Show message
+            const msg = document.createElement('div');
+            msg.className = 'fish-message';
+            msg.textContent = 'Hai trovato un pesce brutto! 🐡';
+            document.body.appendChild(msg);
+            setTimeout(() => msg.remove(), 2000);
+        });
+        
+        // Remove after crossing the screen
+        setTimeout(() => {
+            if (fish.parentNode) fish.remove();
+        }, 15000);
+        
+        // Spawn next fish
+        spawnUglyFish();
+    }, delay);
+}
+
+// Start the easter egg
+spawnUglyFish();
+
 document.addEventListener('click', function(e) {
     // Don't trigger on interactive elements
     if (e.target.tagName === 'A' || e.target.tagName === 'BUTTON' || e.target.closest('.sidebar')) {

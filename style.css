@@ -560,6 +560,67 @@ p {
     }
 }
 
+/* Easter Egg: Ugly Fish */
+.easter-fish {
+    position: fixed;
+    left: -100px;
+    z-index: 10000;
+    font-size: 80px;
+    cursor: pointer;
+    animation: fish-swim 15s linear forwards;
+    filter: drop-shadow(0 5px 15px rgba(0, 0, 0, 0.3));
+    transition: transform 0.2s ease;
+}
+
+.easter-fish:hover {
+    transform: scale(1.2);
+}
+
+@keyframes fish-swim {
+    0% {
+        left: -100px;
+        transform: scaleX(1);
+    }
+    100% {
+        left: calc(100% + 100px);
+        transform: scaleX(1);
+    }
+}
+
+@keyframes fish-explode {
+    0% {
+        transform: scale(1) rotate(0deg);
+        opacity: 1;
+    }
+    100% {
+        transform: scale(3) rotate(720deg);
+        opacity: 0;
+    }
+}
+
+.fish-message {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: linear-gradient(135deg, var(--pink), var(--purple));
+    color: white;
+    padding: 20px 40px;
+    border-radius: 30px;
+    font-size: 1.5rem;
+    font-weight: bold;
+    z-index: 10001;
+    animation: fadeIn 0.5s ease, fadeOut 0.5s ease 1.5s forwards;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+}
+
+@keyframes fadeOut {
+    to {
+        opacity: 0;
+        transform: translate(-50%, -60%);
+    }
+}
+
 .photo-gallery {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
