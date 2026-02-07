@@ -143,23 +143,27 @@ function createExplosionDoodle(x, y) {
     doodle.style.left = x + 'px';
     doodle.style.top = y + 'px';
     
-    // Random explosion direction
+    // Random explosion direction with more velocity
     const angle = Math.random() * Math.PI * 2;
-    const velocity = 100 + Math.random() * 150;
+    const velocity = 200 + Math.random() * 250; // Increased velocity
     const vx = Math.cos(angle) * velocity;
-    const vy = Math.sin(angle) * velocity - (100 + Math.random() * 100); // Initial upward velocity
+    const vy = Math.sin(angle) * velocity - (200 + Math.random() * 200); // Strong upward velocity
     
     doodle.style.setProperty('--vx', vx + 'px');
     doodle.style.setProperty('--vy', vy + 'px');
     
     // Random rotation
-    const rotations = 1 + Math.floor(Math.random() * 3);
+    const rotations = 2 + Math.floor(Math.random() * 4);
     doodle.style.setProperty('--rotations', rotations);
+    
+    // Random duration for variation
+    const duration = 2 + Math.random() * 1;
+    doodle.style.animationDuration = duration + 's';
     
     document.body.appendChild(doodle);
     
     // Remove after animation
     setTimeout(() => {
         doodle.remove();
-    }, 2000);
+    }, duration * 1000);
 }
