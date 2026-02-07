@@ -97,3 +97,19 @@ setInterval(() => {
     gradientAngle = (gradientAngle + 1) % 360;
     document.body.style.background = `linear-gradient(${gradientAngle}deg, var(--light-blue) 0%, var(--light-purple) 50%, var(--light-pink) 100%)`;
 }, 100);
+
+// Anti-scraping email reveal
+document.getElementById('email-btn')?.addEventListener('click', function() {
+    const user = 'nicolepostinghel';
+    const domain = 'gmail';
+    const tld = 'com';
+    const email = user + '@' + domain + '.' + tld;
+    
+    const display = document.getElementById('email-display');
+    const btn = document.getElementById('email-btn');
+    
+    display.innerHTML = `<a href="mailto:${email}">${email}</a>`;
+    display.classList.remove('email-hidden');
+    display.classList.add('email-shown');
+    btn.style.display = 'none';
+});
