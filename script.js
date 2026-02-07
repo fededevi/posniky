@@ -6,10 +6,10 @@ const dots = document.querySelectorAll('.dot');
 // Create animated animal doodles
 function createDoodles() {
     const doodlesContainer = document.querySelector('.bg-doodles');
-    const animals = ['🐡', '🐷', '🐾', '🐟', '🐠', '🦈', '🐋', '🐙', '🦀', '🐚', '🦑', '🐬', '🦐', '🐢'];
+    const animals = ['🐡', '🐷', '🐾', '🐟', '🐠', '🦈', '🐋', '🐙', '🦀', '🐚', '🦑', '🐬', '🦐', '🐢', '🐠', '🐡', '🦈'];
     
     // Create multiple floating animals
-    for (let i = 0; i < 20; i++) {
+    for (let i = 0; i < 35; i++) {
         const doodle = document.createElement('div');
         doodle.className = 'doodle';
         doodle.textContent = animals[Math.floor(Math.random() * animals.length)];
