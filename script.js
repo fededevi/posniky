@@ -3,10 +3,12 @@ const container = document.querySelector('.container');
 const sections = document.querySelectorAll('.section');
 const dots = document.querySelectorAll('.dot');
 
+// Shared animal emoji set used for doodles and explosions
+const animals = ['🐡', '🐷', '🐾', '🐟', '🐠', '🦈', '🐋', '🐙', '🦀', '🐚', '🦑', '🐬', '🦐', '🐢'];
+
 // Create animated animal doodles
 function createDoodles() {
     const doodlesContainer = document.querySelector('.bg-doodles');
-    const animals = ['🐡', '🐷', '🐾', '🐟', '🐠', '🦈', '🐋', '🐙', '🦀', '🐚', '🦑', '🐬', '🦐', '🐢', '🐠', '🐡', '🦈'];
     
     // Create multiple floating animals
     for (let i = 0; i < 35; i++) {
@@ -33,25 +35,41 @@ function createDoodles() {
 // Initialize doodles
 createDoodles();
 
-// Update active dot on scroll
+// Throttled scroll handler (combines dot update + parallax)
+let scrollTicking = false;
 container.addEventListener('scroll', () => {
-    let current = '';
-    
-    sections.forEach(section => {
-        const sectionTop = section.offsetTop;
-        const sectionHeight = section.clientHeight;
-        if (container.scrollTop >= sectionTop - sectionHeight / 3) {
-            current = section.getAttribute('id');
-        }
-    });
+    if (!scrollTicking) {
+        requestAnimationFrame(() => {
+            const scrolled = container.scrollTop;
 
-    dots.forEach(dot => {
-        dot.classList.remove('active');
-        if (dot.getAttribute('data-section') === current || 
-            (current === 'besenello' && dot.getAttribute('data-section') === 'intro')) {
-            dot.classList.add('active');
-        }
-    });
+            // Update active dot
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                const sectionHeight = section.clientHeight;
+                if (scrolled >= sectionTop - sectionHeight / 3) {
+                    current = section.getAttribute('id');
+                }
+            });
+            dots.forEach(dot => {
+                dot.classList.remove('active');
+                if (dot.getAttribute('data-section') === current ||
+                    (current === 'besenello' && dot.getAttribute('data-section') === 'intro')) {
+                    dot.classList.add('active');
+                }
+            });
+
+            // Parallax effect
+            sections.forEach((section, index) => {
+                const speed = (index + 1) * 0.1;
+                const yPos = -(scrolled * speed);
+                section.style.backgroundPositionY = yPos + 'px';
+            });
+
+            scrollTicking = false;
+        });
+        scrollTicking = true;
+    }
 });
 
 // Smooth scroll to section
@@ -60,29 +78,19 @@ dots.forEach(dot => {
         e.preventDefault();
         const targetId = dot.getAttribute('href');
         const targetSection = document.querySelector(targetId);
-        
+
         if (targetSection) {
             targetSection.scrollIntoView({ behavior: 'smooth' });
         }
     });
 });
 
-// Parallax effect on scroll
-container.addEventListener('scroll', () => {
-    const scrolled = container.scrollTop;
-    
-    sections.forEach((section, index) => {
-        const speed = (index + 1) * 0.1;
-        const yPos = -(scrolled * speed);
-        section.style.backgroundPositionY = yPos + 'px';
-    });
-});
-
-// Add stagger animation to cards
-const observer = new IntersectionObserver((entries) => {
+// Add stagger animation to cards (unobserve once animated)
+const observer = new IntersectionObserver((entries, obs) => {
     entries.forEach(entry => {
         if (entry.isIntersecting) {
             entry.target.style.animation = 'fadeInUp 0.8s ease forwards';
+            obs.unobserve(entry.target);
         }
     });
 }, { threshold: 0.1 });
@@ -91,12 +99,7 @@ document.querySelectorAll('.school-card, .work-card, .place-card, .info-card').f
     observer.observe(card);
 });
 
-// Dynamic gradient background
-let gradientAngle = 135;
-setInterval(() => {
-    gradientAngle = (gradientAngle + 1) % 360;
-    document.body.style.background = `linear-gradient(${gradientAngle}deg, var(--light-blue) 0%, var(--light-purple) 50%, var(--light-pink) 100%)`;
-}, 100);
+// Dynamic gradient background is handled by CSS @keyframes gradient-rotate
 
 // Anti-scraping email reveal
 document.getElementById('email-btn')?.addEventListener('click', function() {
@@ -113,9 +116,6 @@ document.getElementById('email-btn')?.addEventListener('click', function() {
     display.classList.add('email-shown');
     btn.style.display = 'none';
 });
-
-// Click explosion effect with gravity
-const animals = ['🐡', '🐷', '🐾', '🐟', '🐠', '🦈', '🐋', '🐙', '🦀', '🐚', '🦑', '🐬', '🦐', '🐢'];
 
 // Easter Egg: Random ugly fish appears
 const uglyFish = ['🐡', '🐡', '🐡', '🐠', '🦈', '🐟'];
@@ -162,8 +162,15 @@ function spawnUglyFish() {
     }, delay);
 }
 
-// Start the easter egg
+// Start the easter egg, pause when tab is hidden
 spawnUglyFish();
+document.addEventListener('visibilitychange', () => {
+    if (document.hidden) {
+        clearTimeout(fishTimeout);
+    } else {
+        spawnUglyFish();
+    }
+});
 
 document.addEventListener('click', function(e) {
     // Don't trigger on interactive elements
