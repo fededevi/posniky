@@ -19,10 +19,18 @@ body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     background: linear-gradient(135deg, var(--light-blue) 0%, var(--light-purple) 50%, var(--light-pink) 100%);
     background-attachment: fixed;
+    background-size: 400% 400%;
+    animation: gradient-rotate 20s ease infinite;
     color: var(--dark);
     overflow-x: hidden;
     scroll-behavior: smooth;
     position: relative;
+}
+
+@keyframes gradient-rotate {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
 }
 
 /* Animated Background Doodles */
